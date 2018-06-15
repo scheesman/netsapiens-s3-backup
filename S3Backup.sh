@@ -37,7 +37,7 @@ while [ $# -gt 0 ]; do
     cdr)
       file_name="sipbxdomain-cdr_${hostname}_${date}.sql"
       echo "Backing up Core Module CDRs (25 hours) to ${file_name}.gz and moving to S3"
-      mysqldump SiPbxDomain cdr --user=${user} --password=${password} --skip-add-drop-table --no-create-info --insert-ignore --where='cdr.time_release > DATE_SUB( UTC_TIMESTAMP( ) , INTERVAL 25 HOUR )' --result-file=${backup_path}/${file_name}
+      mysqldump SiPbxDomain cdr --user=${user} --password=${password}  --insert-ignore --where='cdr.time_release > DATE_SUB( UTC_TIMESTAMP( ) , INTERVAL 25 HOUR )' --result-file=${backup_path}/${file_name}
       gzip -f ${backup_path}/${file_name}
       s3cmd -c ${s3cfg} put ${backup_path}/${file_name}.gz s3://${s3bucket}/${hostname}/
       rm ${backup_path}/${file_name}.gz
@@ -45,7 +45,7 @@ while [ $# -gt 0 ]; do
     conference)
       file_name="conferencing_${hostname}_${date}.sql"
       echo "Backing up Conferencing Module to ${file_name}.gz and moving to S3"
-      mysqldump NcsDomain --user=${user} --password=${password} --skip-add-drop-table --no-create-info --result-file=${backup_path}/${file_name}
+      mysqldump NcsDomain --user=${user} --password=${password}  --result-file=${backup_path}/${file_name}
       gzip -f ${backup_path}/${file_name}
       s3cmd -c ${s3cfg} put ${backup_path}/${file_name}.gz s3://${s3bucket}/${hostname}/
       rm ${backup_path}/${file_name}.gz
@@ -53,7 +53,7 @@ while [ $# -gt 0 ]; do
     ndp)
       file_name="ndp_${hostname}_${date}.sql"
       echo "Backing up Endpoints Module to ${file_name}.gz and moving to S3"
-      mysqldump NdpDomain --user=${user} --password=${password} --skip-add-drop-table --no-create-info --ignore-table=NdpDomain.ndp_syslog --result-file=${backup_path}/${file_name}
+      mysqldump NdpDomain --user=${user} --password=${password}  --ignore-table=NdpDomain.ndp_syslog --result-file=${backup_path}/${file_name}
       gzip -f ${backup_path}/${file_name}
       s3cmd -c ${s3cfg} put ${backup_path}/${file_name}.gz s3://${s3bucket}/${hostname}/
       rm ${backup_path}/${file_name}.gz
@@ -68,7 +68,7 @@ while [ $# -gt 0 ]; do
     recording)
       file_name="recording_${hostname}_${date}.sql"
       echo "Backing up Recording Module to ${file_name}.gz and moving to S3"
-      mysqldump LiCfDomain --user=${user} --password=${password} --skip-add-drop-table --no-create-info --result-file=${backup_path}/${file_name}
+      mysqldump LiCfDomain --user=${user} --password=${password}  --result-file=${backup_path}/${file_name}
       gzip -f ${backup_path}/${file_name}
       s3cmd -c ${s3cfg} put ${backup_path}/${file_name}.gz s3://${s3bucket}/${hostname}/
       rm ${backup_path}/${file_name}.gz
