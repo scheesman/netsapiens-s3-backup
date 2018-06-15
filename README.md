@@ -7,7 +7,7 @@ File structure in the S3 bucket will be organized by hostname and service type: 
 Copy the script to the location of your choice.  Change relevant options in the script, such as user, password, .s3cfg location, etc.  Run script manually or via crontab.
 
 ## Requirements
-* s3cmd - install via `sudo install s3cmd`
+* s3cmd - install via `sudo apt-get install s3cmd`
 * Amazon S3 bucket with appropriate permissions
 * Properly configured .s3cfg file.  Should just require setting the access_key and secret_key.
 
