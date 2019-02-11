@@ -9,7 +9,7 @@ Copy the script to the location of your choice.  Change relevant options in the 
 ## Requirements
 * s3cmd - install via `sudo apt-get install s3cmd`
 * Amazon S3 bucket with appropriate permissions
-* Properly configured .s3cfg file.  Should just require setting the access_key and secret_key.
+* Properly configured .s3cfg file.  Should just require setting the access_key and secret_key.  Can be completed with `s3cmd --comfigure`.  Should output file into `/opt/.s3cfg`
 
 ## Usage
 The script takes up to 6 parameters.  You can specify anywhere from 1 to 6, depending on your needs.
