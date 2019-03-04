@@ -22,8 +22,17 @@ Options: `core`, `cdr`, `conference`, `ndp`, `ndpfiles`, `recording`
 ### cdr
 `cdr` backs up the Core module CDRs.  This option only backs up the last 25 hours, so you will want to run this option once per day.
 
+### cdr2
+`cdr2` backs up current month's CDR2 files.  This should be run every day as it only backs up the current month's tables.
+
+### cdr2last
+`cdr2last` backs up the previous month's CDR2 tables.  This should only be run once a month as these files are huge and they do not change.
+
 ### conference
 `conference` backs up the Conferencing module.
+
+### messaging
+`messaging` backs up the MessagingDomain db and all included dables.  Should be run once a day.
 
 ### ndp
 `ndp` backs up the Endpoints module.
