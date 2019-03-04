@@ -42,6 +42,32 @@ while [ $# -gt 0 ]; do
       s3cmd -c ${s3cfg} put ${backup_path}/${file_name}.gz s3://${s3bucket}/${hostname}/
       rm ${backup_path}/${file_name}.gz
       ;;
+    cdr2-prev)
+      file_name="cdrdomain-cdr2_${hostname}_${date}.sql"
+      cdr2last=`date -d "$(date +%Y-%m-1) -1 month" +%Y%m`
+      echo "Backing up previous month's CDR2 to ${file_name}.gz and moving to S3"
+      mysqldump CdrDomain ${cdr2last}_d ${cdr2last}_g ${cdr2last}_m ${cdr2last}_r ${cdr2last}_u --user=${user} --password=${password} --insert-ignore --result-file=${backup_path}/${file_name}
+      gzip -f ${backup_path}/${file_name}
+      s3cmd -c ${s3cfg} put ${backup_path}/${file_name}.gz s3://${s3bucket}/${hostname}/
+      rm ${backup_path}/${file_name}.gz
+      ;;
+    cdr2)
+      file_name="cdrdomain-cdr2_${hostname}_${date}.sql"
+      cdr2current=$(date +"%Y%m")
+      echo "Backing up current CDR2 to ${file_name}.gz and moving to S3"
+      mysqldump CdrDomain ${cdr2current}_d ${cdr2current}_g ${cdr2current}_m ${cdr2current}_r ${cdr2current}_u --user=${user} --password=${password} --insert-ignore --result-file=${backup_path}/${file_name}
+      gzip -f ${backup_path}/${file_name}
+      s3cmd -c ${s3cfg} put ${backup_path}/${file_name}.gz s3://${s3bucket}/${hostname}/
+      rm ${backup_path}/${file_name}.gz
+      ;;
+    messaging)
+      file_name="messagingdomain_${hostname}_${date}.sql"
+      echo "Backing up Messaging DB to ${file_name}.gz and moving to S3"
+      mysqldump MessagingDomain --user=${user} --password=${password}  --insert-ignore --result-file=${backup_path}/${file_name}
+      gzip -f ${backup_path}/${file_name}
+      s3cmd -c ${s3cfg} put ${backup_path}/${file_name}.gz s3://${s3bucket}/${hostname}/
+      rm ${backup_path}/${file_name}.gz
+      ;;
     conference)
       file_name="conferencing_${hostname}_${date}.sql"
       echo "Backing up Conferencing Module to ${file_name}.gz and moving to S3"
@@ -74,7 +100,7 @@ while [ $# -gt 0 ]; do
       rm ${backup_path}/${file_name}.gz
       ;;
     *)
-    echo "Specify backup type: core,cdr,conference,ndp,ndpfiles,recording"
+    echo "Specify backup type: core,cdr,cdr2,cdr2-prev,conference,messaging,ndp,ndpfiles,recording"
 
   esac
   shift
